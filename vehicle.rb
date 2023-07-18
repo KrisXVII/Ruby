@@ -46,7 +46,5 @@ end
 car1 = Car.new('car', 'BMW', '10.000', 'Red')
 print "car1: ", car1, "\n",
       car1.usage
-car1 = Car.new('car', 'BMW', '10.000', 'red')
-print "car1: ", car1, "\n", car1.go
 
 
