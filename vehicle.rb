@@ -11,8 +11,13 @@ class Vehicle
   end
 end
 
-
+module Go
+  def go
+    return "Go"
+  end
+end
 class Car < Vehicle
+  include Go
   attr_accessor :label, :type, :tires
 
   def initialize(type, label, price, color)
@@ -28,6 +33,6 @@ class Car < Vehicle
 end
 
 car1 = Car.new('car', 'BMW', '10.000', 'red')
-print "car1: ", car1, "\n"
+print "car1: ", car1, "\n", car1.go
 
 
