@@ -1,4 +1,11 @@
+module Lets_go
+  def lets_go
+    return "Ok lets go"
+  end
+end
+
 class Vehicle
+  include Lets_go
   attr_accessor :price, :color
 
   def initialize(price, color)
@@ -11,7 +18,7 @@ class Vehicle
   end
 end
 
-module Usage
+module Info
   def usage
     if self.color == 'red'
       return "I am a sports car!"
@@ -19,16 +26,14 @@ module Usage
       return "Better go to job with this car"
     end
   end
-end
 
-module Go
-  def go
-    return "Go"
+  def label_find
+    return self.label
   end
 end
+
 class Car < Vehicle
-  include Usage
-  include Go
+  include Info
   attr_accessor :label, :type, :tires
 
   def initialize(type, label, price, color)
@@ -43,8 +48,12 @@ class Car < Vehicle
   end
 end
 
-car1 = Car.new('car', 'BMW', '10.000', 'Red')
-print "car1: ", car1, "\n",
-      car1.usage
+car1 = Car.new('car', 'BMW', 10_000, 'Red')
+print car1, "\n",
+      Car.ancestors,"\n",
+      Vehicle.ancestors,"\n",
+      car1.label_find, "\n"
+vehicle1 = Vehicle.new(5_720, 'white')
+print vehicle1
 
 
