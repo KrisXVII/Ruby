@@ -1,4 +1,5 @@
 require 'csv'
+require 'google/apis/civicinfo_v2'
 # print 'Programma partito', "\n"
 #
 # file_to_parse = 'C:\Users\User\OneDrive\Documenti\Ruby\event_manager\lib\event_attendees.csv'
@@ -12,13 +13,6 @@ require 'csv'
 #   end
 # end
 
-# parsing with CSV only built-in functions
-print "Parsing del file cominciato\n"
-file = CSV.open(
-  'C:\Users\User\OneDrive\Documenti\Ruby\event_manager\lib\event_attendees.csv',
-  headers: true,
-  header_converters: :symbol
-)
 
 def clean_zipcode(zipcode)
   len = zipcode.to_s.length
@@ -37,12 +31,43 @@ def clean_zipcode(zipcode)
     end
   end
   return zipcode
+  # return zipcode.to_s.rjust(5, '0')[0..4] #simplified version
 end
 
+# Implementing API from google for replacing missing zipcode
+def legislators_by_zipcode(zip)
+  civic_info = Google::Apis::CivicinfoV2::CivicInfoService.new
+  civic_info.key = 'AIzaSyClRzDqDh5MsXwnCWi0kOiiBivP6JsSyBw'
+
+  begin
+    legislators = civic_info.representative_info_by_address(
+      address: zip,
+      levels: 'country',
+      roles: %w[legislatorUpperBody legislatorLowerBody]
+    )
+    legislators = legislators.officials
+    legislator_names = legislators.map do |legislator|
+      legislator.name
+    end
+    legislator_names.join(", ")
+  rescue
+    'You can find your representatives by visiting www.commoncause.org/take-action/find-elected-officials'
+  end
+end
+
+# parsing with CSV only built-in functions
+print "Parsing del file cominciato\n"
+file = CSV.open(
+  'C:\Users\User\OneDrive\Documenti\Ruby\event_manager\lib\event_attendees.csv',
+  headers: true,
+  header_converters: :symbol
+)
 
 file.each do |line|
   name = line[:first_name]
   zipcode = clean_zipcode(line[:zipcode])
-  puts "#{name}: #{zipcode}"
+  legislators = legislators_by_zipcode(zipcode)
+
+  puts "#{name}: #{zipcode}, #{legislators}"
 end
 
