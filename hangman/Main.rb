@@ -47,7 +47,7 @@ def guess_check(letter)
 end
 
 def playgame
-  file = 'C:\Users\User\OneDrive\Documenti\Ruby\hangman\google-10000-english-no-swears.txt'
+  file = "hangman/google-10000-english-no-swears.txt"
   list_responses_confirm = "yes ye ya y yas yea"
   word_x = Word.new(file)
   underscores = word_x.underscores(word_x)
