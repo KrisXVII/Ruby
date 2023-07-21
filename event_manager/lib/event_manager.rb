@@ -58,7 +58,7 @@ end
 # parsing with CSV only built-in functions
 print "Parsing del file cominciato\n"
 file = CSV.open(
-  'C:\Users\User\OneDrive\Documenti\Ruby\event_manager\lib\event_attendees.csv',
+  'event_manager\lib\event_attendees.csv',
   headers: true,
   header_converters: :symbol
 )
